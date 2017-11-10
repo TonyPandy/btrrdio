@@ -6,9 +6,10 @@ function getJSONPods (url) {
 }
 
 function renameThisFunction() {
+    console.clear();
     var searchTerm = document.getElementById("searchField").value;
     //var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&limit=7&media=podcast';
-    var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&media=podcast';
+    var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&media=podcast&limit=7';
     var resultsDiv = document.getElementById("resultsDiv");
     var json_obj = JSON.parse(getJSONPods(url));
     resultsDiv.innerHTML = "";
