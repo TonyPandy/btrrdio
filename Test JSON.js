@@ -9,7 +9,7 @@ function renameThisFunction() {
     console.clear();
     var searchTerm = document.getElementById("searchField").value;
     //var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&limit=7&media=podcast';
-    var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&media=podcast&limit=7';
+    var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&media=podcast&limit=6';
     var resultsDiv = document.getElementById("resultsDiv");
     var json_obj = JSON.parse(getJSONPods(url));
     resultsDiv.innerHTML = "";
@@ -22,7 +22,7 @@ function renameThisFunction() {
         //alert(json_obj.results[i].feedUrl);
 
         resultsDiv.innerHTML += "name: " + json_obj.results[i].artistName +
-            "<br><img name='test" + i + "' src=" + json_obj.results[i].artworkUrl100 + "><br>"; //output title + image
+            "<br><img name='test" + i + "' src=" + json_obj.results[i].artworkUrl100 + "><br><br>"; //output title + image
 
         getXML('https://cors-anywhere.herokuapp.com/'+json_obj.results[i].feedUrl);
     }
