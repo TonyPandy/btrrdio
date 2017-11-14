@@ -1,0 +1,11 @@
+Tasklist
+
+- Modify current branch into one unified branch
+
+- Return search results that include the actual podcast title, as some of them are displaying incorrectly (use a different attribute)
+
+- Return the latest episode + description + the link to hte .mp3 file for each result
+
+- "front-end design to make shit look good"
+
+- Make a HTML5 audtio player for the .mp3 results
