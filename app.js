@@ -48,8 +48,6 @@ function outputResults(jsonResults) {
 }
 
 function getXML (url, jsonTrackId) {
-  console.log(jsonTrackId);
-    let trackId = jsonTrackId;
     var resultsDiv = document.getElementById("resultsDiv");
         $.get(url, function (data) {
             console.log(data);
