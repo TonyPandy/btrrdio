@@ -1,10 +1,10 @@
 Tasklist
 
-- Merge current branches into one unified branch
+- Merge current branches into one unified branch -- DONE
 
-- Return search results that include the actual podcast title, as some of them are displaying incorrectly (use a different attribute)
+- Return search results that include the actual podcast title, as some of them are displaying incorrectly (use a different attribute) -- DONE
 
-- Return the latest episode + description + the link to the .mp3 file for each result
+- Return the latest episode + description + the link to the .mp3 file for each result -- DONE
 
 - "front-end design to make shit look good"
 
