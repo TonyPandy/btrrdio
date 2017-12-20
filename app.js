@@ -1,3 +1,8 @@
+
+
+
+
+
 function getJSONPods (url) {
     var Httpreq = new XMLHttpRequest();
     Httpreq.open("GET", url, false);
@@ -5,7 +10,7 @@ function getJSONPods (url) {
     return Httpreq.responseText;
 }
 
-function renameThisFunction() {
+function findPod() {
     var resultsDiv = document.getElementById("resultsDiv");
     var searchTerm = document.getElementById("searchField").value;
     var url = 'https://itunes.apple.com/search?term=' + searchTerm + '&media=podcast&limit=6';
@@ -18,10 +23,9 @@ function renameThisFunction() {
     var resultCount = json_obj.resultCount;
 
     console.clear();
-    resultsDiv.innerHTML = "";
     console.log(json_obj);
     if (resultCount == 0) {
-        resultsDiv.innerHTML = "<br>No results found!";
+        resultsDiv.innerHTML = "No results found!";
     }
 
 
@@ -33,33 +37,54 @@ function renameThisFunction() {
         //Then, getXML gets called with the XML parameters (cors-anywhere shit) as well as the trackID from the JSON. This is what joins the XML and JSON results for display
         //Then in getXML, the same stuff happens, I just added in a bit where the description for the first episode (latest episode) also gets returned.
     }
+
+    return false;
 }
 
 function outputResults(jsonResults) {
+    var resultsOutput;
     var resultsDiv = document.getElementById("resultsDiv");
     console.log(jsonResults);
-    var getXMLParameters = 'https://cors-anywhere.herokuapp.com/' + jsonResults.feedUrl;
-
-    resultsDiv.innerHTML += "<a href='#' id='result" + jsonResults.trackId + "'>" + jsonResults.trackName + "</a><br><p>" + jsonResults.artistName + "</p><img src='" + jsonResults.artworkUrl100 + "'><br><br><strong><span id='epTitle" + jsonResults.trackId + "'></span></strong><br><p id='epDescript" + jsonResults.trackId + "'></p><span id=playEp" + jsonResults.trackId + "></span>";
-
+    var getXMLParameters = jsonResults.feedUrl;
+// 'https://cors-anywhere.herokuapp.com/' +
+  resultsOutput = "<div class='row podResult'><div class='col-sm-3'><img src='" + jsonResults.artworkUrl600 + "' style='width: 100%;'></div> <div class='col-sm-9'><a href='#' class='podTitle' id='result" + jsonResults.trackId + "'>" + jsonResults.trackName + "</a><br><p class='artist'>" + jsonResults.artistName + "</p><p id='description" + jsonResults.trackId + "'></p><br><span id='epList" + jsonResults.trackId + "'>See Episode List</span><br>Latest Ep: <strong><span id='epTitle" + jsonResults.trackId + "'></span></strong><br><span id=playEp" + jsonResults.trackId +"> </span><br><span id='epListing" + jsonResults.trackId + "'></span></div></div></div>";
+// <p id='epDescript" + jsonResults.trackId + "'></p>
       //getXML is now called for each outputResults
-      getXML(getXMLParameters, jsonResults.trackId);
+      getXML(getXMLParameters, jsonResults.trackId, resultsOutput);
 
 }
 
-function getXML (url, jsonTrackId) {
+function getXML (url, jsonTrackId, resultsHTML) {
     var resultsDiv = document.getElementById("resultsDiv");
-        $.get(url, function (data) {
-            console.log(data);
-            console.log(document.getElementById("epTitle"+jsonTrackId));
-            var FirstEpisode = $(data).find("item").first();
-            document.getElementById("epTitle"+jsonTrackId).innerHTML = FirstEpisode.find("title").text();
-            document.getElementById("epDescript"+jsonTrackId).innerHTML = FirstEpisode.find("description").text();
-            console.log(FirstEpisode);
-            firstEpisodeUrl = FirstEpisode.find("enclosure").attr('url');
-            console.log(firstEpisodeUrl);
-            document.getElementById("playEp"+jsonTrackId).innerHTML = "<audio controls><source src=" + firstEpisodeUrl + " type='audio/mpeg'></audio><br>";
-            console.log("title: " + FirstEpisode.find("title").first().text());
-            console.log("description: " + FirstEpisode.find("description").first().text());
+      $.when($.get(url, function (data) {
+        })).then(function(data){
+          console.log(data);
+          var podcastDescript = $(data).find("channel > description");
+          console.log(podcastDescript["0"].textContent);
+          var FirstEpisode = $(data).find("item").first();
+          var episodes = $(data).find("item");
+          var resultsDiv = document.getElementById("resultsDiv");
+          resultsDiv.innerHTML += resultsHTML;
+          document.getElementById("description"+jsonTrackId).innerHTML = podcastDescript["0"].textContent;
+          document.getElementById("epTitle"+jsonTrackId).innerHTML = FirstEpisode.find("title").text();
+          var epListLink = document.getElementById("epList"+jsonTrackId);
+          //document.getElementById("epDescript"+jsonTrackId).innerHTML = FirstEpisode.find("description").text();
+          firstEpisodeUrl = FirstEpisode.find("enclosure").attr('url');
+          document.getElementById("playEp"+jsonTrackId).innerHTML = "<audio controls style='width: 100%'><source src=" + firstEpisodeUrl + " type='audio/mpeg'></audio><br>";
+          document.getElementById("epList"+jsonTrackId).innerHTML = "<a href='#'>Episode List</a>";
+          displayEpisodes(episodes, jsonTrackId);
         });
+}
+
+function displayEpisodes(eps, jsonTrackId) {
+  console.log(eps);
+  for(var i = 1; i < 10; i++){
+
+    var title = $(eps[i]).find("title").text();
+    var url = $(eps[i]).find("enclosure").attr('url');
+
+    document.getElementById("epListing"+jsonTrackId).innerHTML += "<p>" +title + "</p>" + "<audio controls style='width: 100%'><source src=" + url + " type='audio/mpeg'></audio><br>";
+  }
+
+  document.getElementById("epListing"+jsonTrackId).innerHTML += "<strong>See More</strong>";
 }

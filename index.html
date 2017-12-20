@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Better radio or something</title>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="app.js"></script>
-    </head>
-    <body>
-        Podcast searcha' <br>
-        <input id="searchField" name="searchField" placeholder="Type search stuff here">
-        <button name="testBut" value="testBut" onclick="renameThisFunction()">Search for podcasts</button>
-        <br><br>
-        <div id="resultsDiv">
-        </div>
-    </body>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Better Radio</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+</head>
+
+<style>
+  .podResult {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #ccc;
+    padding: 1em;
+  }
+
+  .artist {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: #ccc;
+  }
+
+  .podTitle {
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+</style>
+
+
+<body>
+<br><br>
+  <div class="row">
+    <div class="container">
+      <div class="form-inline">
+  <input id="searchField" class="form-control" name="searchField" placeholder="Search for podcasts" onkeypress="return searchKeyPress(event);" style="width: 80%;"> &nbsp;&nbsp;
+  <button class="btn btn-primary" id="searchPod" onclick="findPod()">Find a podcast</button>
+</div>
+  <br><br>
+  <div id="resultsDiv">
+  </div>
+
+</div>
+</div>
+
+  <script>
+  function searchKeyPress(e)
+  {
+      // look for window.event in case event isn't passed in
+      e = e || window.event;
+      if (e.keyCode == 13)
+      {
+          document.getElementById('searchPod').click();
+          return false;
+      }
+      return true;
+  }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+</body>
+
 </html>
