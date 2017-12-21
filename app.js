@@ -71,9 +71,9 @@ function getXML (url, jsonTrackId, resultsHTML) {
         });
 }
 
-function displayEpisodes(eps, jsonTrackId) {
-  console.log(eps);
-  for(var i = 0; i < 50; i++){
+function displayEpisodes(eps, jsonTrackId, epPic) {
+  // console.log(eps);
+  for(var i = 0; i < 30; i++){
 
     var title = $(eps[i]).find("title").text();
     var url = $(eps[i]).find("enclosure").attr('url');
@@ -82,15 +82,18 @@ function displayEpisodes(eps, jsonTrackId) {
     var dateRaw  = $(eps[i]).find("pubdate").textContent;
     var pubdate = "";
 
-    console.log(descript);
-    console.log(pubdate);
+    var epPic = $(eps[i]).find("itunes:image");
+
+    console.log(epPic);
+    console.log(eps[i]);
 
     //TEST - clear date, need to fix this to correctly find the date of publish
     //dateRaw.slice(0,16) -- slice for fixing date format
 
-    document.getElementById("epResultsDiv").innerHTML += "<p><strong>" + title + "</strong><span class='artist'> "+ pubdate + "</span></p><p>" + descript + "</p>" + "<audio controls style='width: 100%'><source src=" + url + " type='audio/mpeg'></audio><br><br>";
+    document.getElementById("epResultsDiv").innerHTML += "<div class='row podResult'><div class='col-sm-2'><img src='" + epPic + "' width='150'></div><div class='col-sm-10'><p><strong>" + title + "</strong><span class='artist'> "+ pubdate + "</span></p><p>" + descript + "</p>" + "<audio controls style='width: 100%'><source src=" + url + " type='audio/mpeg'></audio><br><br></div>";
   }
 
+  document.getElementById("epResultsDiv").innerHTML += "<br><br><a href='#' class='text-center'>Load More Episodes</a><br><br>";
 
 }
 
@@ -106,10 +109,12 @@ function showPodcastDeets(id) {
 
   $.when($.get(getXMLParameters, function (data) {
     })).then(function(data){
-      console.log(data);
+      // console.log(data);
       var podcastDescript = $(data).find("channel > description");
       var episodes = $(data).find("item");
       var resultsDiv = document.getElementById("epResultsDiv");
+
+
 
       document.getElementById("descriptionDeets").innerHTML = "<div class='row podResult'><div class='col-sm-3'><img src='" + jsonResults.artworkUrl600 + "' style='width: 100%;'></div> <div class='col-sm-9'><p class='podTitle' id='result" + jsonResults.trackId + "'>" + jsonResults.trackName + "</a><br><p class='artist'>" + jsonResults.artistName + "</p><p id='description" + jsonResults.trackId + "'>"+ podcastDescript["0"].textContent + "</p></div></div></div>";
 
