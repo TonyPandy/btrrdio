@@ -73,16 +73,16 @@ function getXML (url, jsonTrackId, resultsHTML) {
 
 function displayEpisodes(eps, jsonTrackId, epPic) {
   // console.log(eps);
-  for(var i = 0; i < 30; i++){
+  for(var i = 0; i < 20; i++){
 
     var title = $(eps[i]).find("title").text();
     var url = $(eps[i]).find("enclosure").attr('url');
     var descript = $(eps[i]).find("description")["0"].textContent;
     descript = descript.trim();
-    var dateRaw  = $(eps[i]).find("pubdate").textContent;
+    var dateRaw  = $(eps[i]).find("pubdate");
     var pubdate = "";
 
-    var epPic = $(eps[i]).find("itunes:image");
+    var epPic = $(eps[i]).find('itunes\\:image').attr('href');
 
     console.log(epPic);
     console.log(eps[i]);
@@ -90,7 +90,7 @@ function displayEpisodes(eps, jsonTrackId, epPic) {
     //TEST - clear date, need to fix this to correctly find the date of publish
     //dateRaw.slice(0,16) -- slice for fixing date format
 
-    document.getElementById("epResultsDiv").innerHTML += "<div class='row podResult'><div class='col-sm-2'><img src='" + epPic + "' width='150'></div><div class='col-sm-10'><p><strong>" + title + "</strong><span class='artist'> "+ pubdate + "</span></p><p>" + descript + "</p>" + "<audio controls style='width: 100%'><source src=" + url + " type='audio/mpeg'></audio><br><br></div>";
+    document.getElementById("epResultsDiv").innerHTML += "<div class='row podResult'><div class='col-sm-2'><img src='" + epPic + "' width='150'></div><div class='col-sm-10'><p><strong>" + title + "</strong><span class='artist'> "+ pubdate + "</span></p><p>" + descript + "</p>" + "<audio controls='controls' preload='none' style='width: 100%'><source src=" + url + " type='audio/mpeg'></audio><br><br></div>";
   }
 
   document.getElementById("epResultsDiv").innerHTML += "<br><br><a href='#' class='text-center'>Load More Episodes</a><br><br>";
